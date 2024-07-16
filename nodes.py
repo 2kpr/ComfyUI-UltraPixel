@@ -22,7 +22,7 @@ def download_models():
         ["stage_a.safetensors", "stabilityai/stable-cascade"],
         ["previewer.safetensors", "stabilityai/stable-cascade"],
         ["effnet_encoder.safetensors", "stabilityai/stable-cascade"],
-        ["stage_b_lite_bf16.safetensors ", "stabilityai/stable-cascade"],
+        ["stage_b_lite_bf16.safetensors", "stabilityai/stable-cascade"],
         ["stage_c_bf16.safetensors", "stabilityai/stable-cascade"],
     ]
     for model in models:
