@@ -1,5 +1,10 @@
 # ComfyUI-UltraPixel
 
+All thanks to the team that made UltraPixel:<br/>
+https://jingjingrenabc.github.io/ultrapixel/<br/>
+https://arxiv.org/abs/2407.02158<br/>
+https://github.com/catcathh/UltraPixel<br/>
+
 Install by git cloning this repo to your ComfyUI custom_nodes directory.
 ```
 git clone https://github.com/2kpr/ComfyUI-UltraPixel
