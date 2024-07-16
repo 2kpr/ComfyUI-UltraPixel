@@ -23,3 +23,11 @@ Example Output for prompt:
 <br/>
 
 <img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/ComfyUI_00001_.png">
+
+<br/>
+Example Output for prompt:
+A highly detailed, high-quality image of the Banff National Park in Canada. The turquoise waters of Lake Louise are surrounded by snow-capped mountains and dense pine forests. A wooden canoe is docked at the edge of the lake. The sky is a clear, bright blue, and the air is crisp and fresh.
+<br/>
+<br/>
+
+<img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/ComfyUI_00002_.png">
