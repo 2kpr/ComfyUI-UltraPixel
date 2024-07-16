@@ -1,0 +1,5 @@
+webdataset>=0.2.79
+wandb>=0.16.2
+munch>=4.0.0
+warmup-scheduler @ git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git
+torchtools @ git+https://github.com/pabloppp/pytorch-tools
