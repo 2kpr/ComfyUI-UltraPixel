@@ -17,6 +17,9 @@ pip install -r requirements.txt
 
 Load the provided workflow.json in ComfyUI and hit 'Queue Prompt'.
 
+When the workflow first runs the first node will download all the necessary files into a ComfyUI/models/ulttrapixel directory.<br/>
+<i>(make sure to update as there was an issue with downloading stage_b_lite_bf16.safetensors which was fixed [here](https://github.com/2kpr/ComfyUI-UltraPixel/commit/45d32bbe3777f1773dc0f74deea075d77b6d9278))</i>
+
 Example Output for prompt:
 "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden."
 <br/>
