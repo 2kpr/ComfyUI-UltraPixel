@@ -1,4 +1,4 @@
-# ComfyUI-UltraPixel
+# ComfyUI-UltraPixel (WIP)
 
 All thanks to the team that made UltraPixel:<br/>
 https://jingjingrenabc.github.io/ultrapixel/<br/>
