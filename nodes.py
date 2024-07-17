@@ -24,6 +24,7 @@ def download_models():
         ["effnet_encoder.safetensors", "stabilityai/stable-cascade"],
         ["stage_b_lite_bf16.safetensors", "stabilityai/stable-cascade"],
         ["stage_c_bf16.safetensors", "stabilityai/stable-cascade"],
+        ["controlnet/canny.safetensors", "stabilityai/stable-cascade"],
     ]
     for model in models:
         model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
@@ -49,6 +50,7 @@ class UltraPixelLoad:
                 "stage_c": (get_models("stage_c_bf16.safetensors"),),
                 "effnet": (get_models("effnet_encoder.safetensors"),),
                 "previewer": (get_models("previewer.safetensors"),),
+                "controlnet": (get_models("controlnet/canny.safetensors"),),
             },
         }
 
@@ -57,9 +59,13 @@ class UltraPixelLoad:
     FUNCTION = "ultrapixel"
     CATEGORY = "UltraPixel"
 
-    def ultrapixel(self, ultrapixel, stage_a, stage_b, stage_c, effnet, previewer):
+    def ultrapixel(
+        self, ultrapixel, stage_a, stage_b, stage_c, effnet, previewer, controlnet
+    ):
         download_models()
-        model = up.UltraPixel(ultrapixel, stage_a, stage_b, stage_c, effnet, previewer)
+        model = up.UltraPixel(
+            ultrapixel, stage_a, stage_b, stage_c, effnet, previewer, controlnet
+        )
         return (model,)
 
 
@@ -96,14 +102,25 @@ class UltraPixelProcess:
                     "FLOAT",
                     {"default": 4.0, "min": 1.0, "max": 1000.0, "step": 0.1},
                 ),
+                "controlnet_weight": (
+                    "FLOAT",
+                    {"default": 0.7, "min": 0.01, "max": 10.0, "step": 0.01},
+                ),
                 "prompt": (
                     "STRING",
                     {"multiline": True, "dynamicPrompts": True},
                 ),
             },
+            "optional": {
+                "controlnet_image": ("IMAGE",),
+            },
         }
 
-    RETURN_TYPES = ("IMAGE",)
+    RETURN_TYPES = (
+        "IMAGE",
+        "IMAGE",
+    )
+    RETURN_NAMES = ("image", "edge_preview")
     FUNCTION = "ultrapixel"
     CATEGORY = "UltraPixel"
 
@@ -119,7 +136,9 @@ class UltraPixelProcess:
         stage_b_cfg,
         stage_c_steps,
         stage_c_cfg,
+        controlnet_weight,
         prompt,
+        controlnet_image=None,
     ):
         model.set_config(
             height,
@@ -131,10 +150,12 @@ class UltraPixelProcess:
             stage_b_cfg,
             stage_c_steps,
             stage_c_cfg,
+            controlnet_weight,
             prompt,
+            controlnet_image,
         )
-        image = model.process()
-        return (image,)
+        image, edge_preview = model.process()
+        return (image, edge_preview)
 
 
 NODE_CLASS_MAPPINGS = {

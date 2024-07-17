@@ -1,6 +1,6 @@
 {
-  "last_node_id": 3,
-  "last_link_id": 2,
+  "last_node_id": 15,
+  "last_link_id": 19,
   "nodes": [
     {
       "id": 1,
@@ -11,7 +11,7 @@
       ],
       "size": {
         "0": 315,
-        "1": 178
+        "1": 202
       },
       "flags": {},
       "order": 0,
@@ -21,7 +21,7 @@
           "name": "model",
           "type": "ULTRAPIXELMODEL",
           "links": [
-            1
+            16
           ],
           "shape": 3,
           "slot_index": 0
@@ -36,20 +36,21 @@
         "stage_b_lite_bf16.safetensors",
         "stage_c_bf16.safetensors",
         "effnet_encoder.safetensors",
-        "previewer.safetensors"
+        "previewer.safetensors",
+        "controlnet/canny.safetensors"
       ]
     },
     {
-      "id": 3,
-      "type": "SaveImage",
+      "id": 12,
+      "type": "PreviewImage",
       "pos": [
-        871,
-        141
+        910,
+        145
       ],
-      "size": [
-        873.0262342800004,
-        791.1457883800002
-      ],
+      "size": {
+        "0": 1088.8128662109375,
+        "1": 990.3649291992188
+      },
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -57,25 +58,24 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 2
+          "link": 18
         }
       ],
-      "properties": {},
-      "widgets_values": [
-        "ComfyUI"
-      ]
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
     },
     {
-      "id": 2,
+      "id": 14,
       "type": "UltraPixelProcess",
       "pos": [
-        394,
-        143
+        386,
+        146
       ],
-      "size": [
-        423.65358999,
-        463.9159245400002
-      ],
+      "size": {
+        "0": 450.48370361328125,
+        "1": 479.1488037109375
+      },
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -83,27 +83,39 @@
         {
           "name": "model",
           "type": "ULTRAPIXELMODEL",
-          "link": 1
+          "link": 16
+        },
+        {
+          "name": "controlnet_image",
+          "type": "IMAGE",
+          "link": null
         }
       ],
       "outputs": [
         {
-          "name": "IMAGE",
+          "name": "image",
           "type": "IMAGE",
           "links": [
-            2
+            18
           ],
           "shape": 3,
           "slot_index": 0
+        },
+        {
+          "name": "edge_preview",
+          "type": "IMAGE",
+          "links": [],
+          "shape": 3,
+          "slot_index": 1
         }
       ],
       "properties": {
         "Node name for S&R": "UltraPixelProcess"
       },
       "widgets_values": [
-        3072,
         2048,
-        602230036260630,
+        2048,
+        741997913499515,
         "randomize",
         "bf16",
         "true",
@@ -111,24 +123,25 @@
         1.1,
         20,
         4,
+        0.7000000000000001,
         "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden."
       ]
     }
   ],
   "links": [
     [
-      1,
+      16,
       1,
       0,
-      2,
+      14,
       0,
       "ULTRAPIXELMODEL"
     ],
     [
-      2,
-      2,
+      18,
+      14,
       0,
-      3,
+      12,
       0,
       "IMAGE"
     ]
@@ -137,10 +150,10 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6830134553650707,
+      "scale": 0.6830134553650706,
       "offset": [
-        -106.16779180229167,
-        -84.02432606323647
+        9.066506738772325,
+        -54.63064767978551
       ]
     }
   },
