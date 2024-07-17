@@ -1,3 +1,4 @@
+matplotlib>=3.7.4
 webdataset>=0.2.79
 wandb>=0.16.2
 munch>=4.0.0
