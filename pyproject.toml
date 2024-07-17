@@ -1,0 +1,15 @@
+[project]
+name = "comfyui-ultrapixel"
+description = "Implementation of UltraPixel on ComfyUI"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["webdataset>=0.2.79", "wandb>=0.16.2", "munch>=4.0.0", "warmup-scheduler @ git+https://github.com/ildoonet/pytorch-gradual-warmup-lr.git", "torchtools @ git+https://github.com/pabloppp/pytorch-tools"]
+
+[project.urls]
+Repository = "https://github.com/2kpr/ComfyUI-UltraPixel"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-UltraPixel"
+Icon = ""
