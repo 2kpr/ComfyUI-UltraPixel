@@ -140,7 +140,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
 
         # MODEL VERSION
         model_version: str = EXPECTED  # 3.6B or 1B
-        clip_image_model_name: str = "openai/clip-vit-large-patch14"
+        # clip_image_model_name: str = "openai/clip-vit-large-patch14"
         clip_text_model_name: str = "laion/CLIP-ViT-bigG-14-laion2B-39B-b160k"
 
         # CHECKPOINT PATHS
@@ -162,8 +162,8 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
 
     @dataclass(frozen=True)
     class Models(TrainingCore.Models, DataCore.Models, WarpCore.Models):
-        effnet: nn.Module = EXPECTED
-        previewer: nn.Module = EXPECTED
+        # effnet: nn.Module = EXPECTED
+        # previewer: nn.Module = EXPECTED
         train_norm: nn.Module = EXPECTED
 
     @dataclass(frozen=True)
@@ -279,6 +279,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
         )
 
         # EfficientNet encoderin
+        """
         effnet = EfficientNetEncoder()
         effnet_checkpoint = load_or_fail(self.config.effnet_checkpoint_path)
         effnet.load_state_dict(
@@ -299,6 +300,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
         )
         previewer.eval().requires_grad_(False).to(self.device)
         del previewer_checkpoint
+        """
 
         @contextmanager
         def dummy_context():
@@ -311,8 +313,8 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
             generator_ema = None
             if self.config.model_version == "3.6B":
                 generator = StageC()
-                if self.config.ema_start_iters is not None:  # default setting
-                    generator_ema = StageC()
+                # if self.config.ema_start_iters is not None:  # default setting
+                #    generator_ema = StageC()
             elif self.config.model_version == "1B":
                 print("in line 155 1b light model", self.config.model_version)
                 generator = StageC(
@@ -322,6 +324,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                     blocks=[[4, 12], [12, 4]],
                 )
 
+                """
                 if self.config.ema_start_iters is not None and self.config.training:
                     generator_ema = StageC(
                         c_cond=1536,
@@ -329,6 +332,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                         nhead=[24, 24],
                         blocks=[[4, 12], [12, 4]],
                     )
+                """
             else:
                 raise ValueError(f"Unknown model version {self.config.model_version}")
 
@@ -343,7 +347,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                 set_module_tensor_to_device(generator, param_name, "cpu", value=param)
 
         generator._init_extra_parameter()
-        generator = generator.to(torch.bfloat16).to(self.device)
+        generator = generator.to(torch.bfloat16).to("cpu")
 
         train_norm = nn.ModuleList()
         cnt_norm = 0
@@ -378,9 +382,10 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                 collect_sd[k[7:]] = v
             train_norm.load_state_dict(collect_sd, strict=True)
 
-        train_norm.to(self.device).train().requires_grad_(True)
-        train_norm_ema = copy.deepcopy(train_norm)
-        train_norm_ema.to(self.device).eval().requires_grad_(False)
+        train_norm.to("cpu").train().requires_grad_(True)
+        # train_norm_ema = copy.deepcopy(train_norm)
+        # train_norm_ema.to(self.device).eval().requires_grad_(False)
+        """
         if generator_ema is not None:
 
             generator_ema.load_state_dict(
@@ -400,7 +405,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                 )
 
             generator_ema.eval().requires_grad_(False)
-
+        """
         check_nan_inmodel(generator, "generator")
 
         if self.config.use_ddp and self.config.training:
@@ -417,25 +422,27 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
             )
             .requires_grad_(False)
             .to(dtype)
-            .to(self.device)
+            .to("cpu")
         )
+        """
         image_model = (
             CLIPVisionModelWithProjection.from_pretrained(
                 self.config.clip_image_model_name
             )
             .requires_grad_(False)
             .to(dtype)
-            .to(self.device)
+            .to("cpu")
         )
+        """
 
         return self.Models(
-            effnet=effnet,
-            previewer=previewer,
+            # effnet=effnet,
+            # previewer=previewer,
             train_norm=train_norm,
             generator=generator,
             tokenizer=tokenizer,
             text_model=text_model,
-            image_model=image_model,
+            # image_model=image_model,
         )
 
     def setup_optimizers(

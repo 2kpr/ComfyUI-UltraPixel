@@ -1,9 +1,15 @@
 # ComfyUI-UltraPixel (WIP)
 
-All thanks to the team that made UltraPixel:<br/>
-https://jingjingrenabc.github.io/ultrapixel/<br/>
-https://arxiv.org/abs/2407.02158<br/>
-https://github.com/catcathh/UltraPixel<br/>
+### ComfyUI node for [UltraPixel](https://jingjingrenabc.github.io/ultrapixel/)
+
+<br/>
+
+Now works <i>(as of 7/17)</i> with 10GB/12GB/16GB GPUs:
+ - 10GB GPUs work up to <i>(about)</i> 2048x2048 <i>(for text2image and controlnet)</i>
+ - 12GB GPUs work up to <i>(about)</i> 3072x3072 <i>(for text2image and controlnet)</i>
+ - 16GB GPUs work up to <i>(about)</i> 4096x4096 <i>(for text2image)</i> and 3840x4096 <i>(for controlnet)</i>
+
+<br/>
 
 Install by git cloning this repo to your ComfyUI custom_nodes directory.
 ```
@@ -54,3 +60,12 @@ A close-up portrait of a young woman with blonde hair bobcut wearing a beautiful
 <br/>
 
 <img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/cn2.png">
+<br/>
+<br/>
+
+### Credits:
+
+All thanks to the team that made UltraPixel:<br/>
+https://jingjingrenabc.github.io/ultrapixel/<br/>
+https://arxiv.org/abs/2407.02158<br/>
+https://github.com/catcathh/UltraPixel<br/>

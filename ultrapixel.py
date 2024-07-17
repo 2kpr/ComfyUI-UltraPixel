@@ -30,26 +30,26 @@ class UltraPixel:
         ultrapixel_directory,
         stablecascade_directory,
     ):
-        if ultrapixel_directory == "default" or not os.path.exists(
-            ultrapixel_directory
-        ):
+        if ultrapixel_directory == "default":
             self.ultrapixel_path = os.path.join(folder_paths.models_dir, "ultrapixel")
-            if not os.path.exists(ultrapixel_directory):
-                print(
-                    f"{ultrapixel_directory} does not exist, defaulting to {self.ultrapixel_path}"
-                )
+        elif not os.path.exists(ultrapixel_directory):
+            print(
+                f"{ultrapixel_directory} does not exist, defaulting to {self.ultrapixel_path}"
+            )
+            self.ultrapixel_path = os.path.join(folder_paths.models_dir, "ultrapixel")
         else:
             self.ultrapixel_path = ultrapixel_directory
-        if stablecascade_directory == "default" or not os.path.exists(
-            stablecascade_directory
-        ):
+        if stablecascade_directory == "default":
             self.stablecascade_path = os.path.join(
                 folder_paths.models_dir, "ultrapixel"
             )
-            if not os.path.exists(stablecascade_directory):
-                print(
-                    f"{stablecascade_directory} does not exist, defaulting to {self.stablecascade_path}"
-                )
+        elif not os.path.exists(stablecascade_directory):
+            print(
+                f"{stablecascade_directory} does not exist, defaulting to {self.stablecascade_path}"
+            )
+            self.stablecascade_path = os.path.join(
+                folder_paths.models_dir, "ultrapixel"
+            )
         else:
             self.stablecascade_path = stablecascade_directory
         self.pretrained = os.path.join(self.ultrapixel_path, pretrained)
@@ -57,8 +57,6 @@ class UltraPixel:
         self.stage_b = os.path.join(self.stablecascade_path, stage_b)
         self.stage_c = os.path.join(self.stablecascade_path, stage_c)
         self.effnet = os.path.join(self.stablecascade_path, effnet)
-        self.previewer = os.path.join(self.stablecascade_path, previewer)
-        self.controlnet = os.path.join(self.stablecascade_path, controlnet)
         self.previewer = os.path.join(self.stablecascade_path, previewer)
         self.controlnet = os.path.join(self.stablecascade_path, controlnet)
 
@@ -131,13 +129,11 @@ class UltraPixel:
         # print("STAGE C READY")
 
         extras_b = core_b.setup_extras_pre()
-        models_b = core_b.setup_models(extras_b, skip_clip=True)
-        models_b = WurstCoreB.Models(
-            **{
-                **models_b.to_dict(),
-                "tokenizer": models.tokenizer,
-                "text_model": models.text_model,
-            }
+        models_b = core_b.setup_models(
+            extras_b,
+            skip_clip=True,
+            tokenizer=models.tokenizer,
+            text_model=models.text_model,
         )
         models_b.generator.bfloat16().eval().requires_grad_(False)
         # print("STAGE B READY")
@@ -202,6 +198,11 @@ class UltraPixel:
 
         for cnt, caption in enumerate(captions):
             with torch.no_grad():
+                models.generator.cpu()
+                torch.cuda.empty_cache()
+                models.text_model.cuda()
+                if self.controlnet_image != None:
+                    models.controlnet.cuda()
 
                 if self.controlnet_image == None:
                     batch = {"captions": [caption] * batch_size}
@@ -216,6 +217,7 @@ class UltraPixel:
                     is_unconditional=False,
                     eval_image_embeds=False,
                 )
+
                 unconditions = core.get_conditions(
                     batch,
                     models,
@@ -246,7 +248,12 @@ class UltraPixel:
                     batch, models_b, extras_b, is_eval=True, is_unconditional=True
                 )
 
+                models.text_model.cpu()
+                if self.controlnet_image != None:
+                    models.controlnet.cpu()
+                torch.cuda.empty_cache()
                 models.generator.cuda()
+
                 print("STAGE C GENERATION***************************")
                 with torch.cuda.amp.autocast(dtype=dtype):
                     sampled_c = generation_c(
@@ -257,19 +264,13 @@ class UltraPixel:
                         stage_c_latent_shape,
                         stage_c_latent_shape_lr,
                         device,
-                        conditions if self.controlnet_image != None else None,
-                        unconditions if self.controlnet_image != None else None,
+                        conditions,
+                        unconditions,
                     )
 
                 models.generator.cpu()
                 torch.cuda.empty_cache()
 
-                conditions_b = core_b.get_conditions(
-                    batch, models_b, extras_b, is_eval=True, is_unconditional=False
-                )
-                unconditions_b = core_b.get_conditions(
-                    batch, models_b, extras_b, is_eval=True, is_unconditional=True
-                )
                 conditions_b["effnet"] = sampled_c
                 unconditions_b["effnet"] = torch.zeros_like(sampled_c)
                 print("STAGE B + A DECODING***************************")

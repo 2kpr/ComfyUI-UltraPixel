@@ -28,25 +28,23 @@ def download_models(ultrapixel_directory, stablecascade_directory):
     ]
     for model in models:
         if model[1].startswith("stabilityai"):
-            if stablecascade_directory == "default" or not os.path.exists(
-                stablecascade_directory
-            ):
+            if stablecascade_directory == "default":
                 model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
-                if not os.path.exists(stablecascade_directory):
-                    print(
-                        f"{stablecascade_directory} does not exist, defaulting to {model_path}"
-                    )
+            elif not os.path.exists(stablecascade_directory):
+                print(
+                    f"{stablecascade_directory} does not exist, defaulting to {model_path}"
+                )
+                model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
             else:
                 model_path = stablecascade_directory
         else:
-            if ultrapixel_directory == "default" or not os.path.exists(
-                ultrapixel_directory
-            ):
+            if ultrapixel_directory == "default":
                 model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
-                if not os.path.exists(ultrapixel_directory):
-                    print(
-                        f"{ultrapixel_directory} does not exist, defaulting to {model_path}"
-                    )
+            elif not os.path.exists(ultrapixel_directory):
+                print(
+                    f"{ultrapixel_directory} does not exist, defaulting to {model_path}"
+                )
+                model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
             else:
                 model_path = ultrapixel_directory
         if os.path.exists(os.path.join(model_path, model[0])):

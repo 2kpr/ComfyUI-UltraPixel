@@ -193,7 +193,9 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
 
         return {"effnet": effnet_embeddings, "clip": conditions["clip_text_pooled"]}
 
-    def setup_models(self, extras: Extras, skip_clip: bool = False) -> Models:
+    def setup_models(
+        self, extras: Extras, tokenizer, text_model, skip_clip: bool = False
+    ) -> Models:
         dtype = (
             getattr(torch, self.config.dtype) if self.config.dtype else torch.float32
         )
@@ -273,9 +275,10 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                     set_module_tensor_to_device(
                         generator, param_name, "cpu", value=param
                     )
-        generator = generator.to(dtype).to(self.device)
+        generator = generator.to(dtype).to("cpu")
         generator = self.load_model(generator, "generator")
 
+        """
         if generator_ema is not None:
             if loading_context is dummy_context:
                 generator_ema.load_state_dict(generator.state_dict())
@@ -286,6 +289,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                     )
             generator_ema = self.load_model(generator_ema, "generator_ema")
             generator_ema.to(dtype).to(self.device).eval().requires_grad_(False)
+        """
 
         if self.config.use_fsdp:
             fsdp_auto_wrap_policy = ModuleWrapPolicy(
@@ -297,6 +301,7 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                 auto_wrap_policy=fsdp_auto_wrap_policy,
                 device_id=self.device,
             )
+            """
             if generator_ema is not None:
                 generator_ema = FSDP(
                     generator_ema,
@@ -304,7 +309,9 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                     auto_wrap_policy=fsdp_auto_wrap_policy,
                     device_id=self.device,
                 )
+            """
 
+        """
         if skip_clip:
             tokenizer = None
             text_model = None
@@ -318,12 +325,13 @@ class WurstCore(TrainingCore, DataCore, WarpCore):
                 .to(dtype)
                 .to(self.device)
             )
+        """
 
         return self.Models(
             effnet=effnet,
             stage_a=stage_a,
             generator=generator,
-            generator_ema=generator_ema,
+            # generator_ema=generator_ema,
             tokenizer=tokenizer,
             text_model=text_model,
         )
