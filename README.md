@@ -22,6 +22,8 @@ When the workflow first runs the first node will download all the necessary file
 
 To enable ControlNet usage you merely have to use the load image node in ComfyUI and tie that to the controlnet_image input on the UltraPixel Process node, you can also attach a preview/save image node to the edge_preview output of the UltraPixel Process node to see the controlnet edge preview. Easiest to just load the included workflow_controlnet.json file in ComfyUI.
 
+As mentioned above the default directory for the UltraPixel and StableCascade downloaded model files is ComfyUI/models/ultrapixel, if you want to alter this you can now change ultrapixel_directory or stablecascade_directory in the UltraPixel Load node from 'default' to the full path/directory you desire.
+
 Example Output for prompt:
 "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden."
 <br/>

@@ -19,16 +19,48 @@ from .train import WurstCore_t2i as WurstCoreC
 
 class UltraPixel:
     def __init__(
-        self, pretrained, stage_a, stage_b, stage_c, effnet, previewer, controlnet
+        self,
+        pretrained,
+        stage_a,
+        stage_b,
+        stage_c,
+        effnet,
+        previewer,
+        controlnet,
+        ultrapixel_directory,
+        stablecascade_directory,
     ):
-        self.ultrapixel_path = os.path.join(folder_paths.models_dir, "ultrapixel")
+        if ultrapixel_directory == "default" or not os.path.exists(
+            ultrapixel_directory
+        ):
+            self.ultrapixel_path = os.path.join(folder_paths.models_dir, "ultrapixel")
+            if not os.path.exists(ultrapixel_directory):
+                print(
+                    f"{ultrapixel_directory} does not exist, defaulting to {self.ultrapixel_path}"
+                )
+        else:
+            self.ultrapixel_path = ultrapixel_directory
+        if stablecascade_directory == "default" or not os.path.exists(
+            stablecascade_directory
+        ):
+            self.stablecascade_path = os.path.join(
+                folder_paths.models_dir, "ultrapixel"
+            )
+            if not os.path.exists(stablecascade_directory):
+                print(
+                    f"{stablecascade_directory} does not exist, defaulting to {self.stablecascade_path}"
+                )
+        else:
+            self.stablecascade_path = stablecascade_directory
         self.pretrained = os.path.join(self.ultrapixel_path, pretrained)
-        self.stage_a = os.path.join(self.ultrapixel_path, stage_a)
-        self.stage_b = os.path.join(self.ultrapixel_path, stage_b)
-        self.stage_c = os.path.join(self.ultrapixel_path, stage_c)
-        self.effnet = os.path.join(self.ultrapixel_path, effnet)
-        self.previewer = os.path.join(self.ultrapixel_path, previewer)
-        self.controlnet = os.path.join(self.ultrapixel_path, controlnet)
+        self.stage_a = os.path.join(self.stablecascade_path, stage_a)
+        self.stage_b = os.path.join(self.stablecascade_path, stage_b)
+        self.stage_c = os.path.join(self.stablecascade_path, stage_c)
+        self.effnet = os.path.join(self.stablecascade_path, effnet)
+        self.previewer = os.path.join(self.stablecascade_path, previewer)
+        self.controlnet = os.path.join(self.stablecascade_path, controlnet)
+        self.previewer = os.path.join(self.stablecascade_path, previewer)
+        self.controlnet = os.path.join(self.stablecascade_path, controlnet)
 
     def set_config(
         self,
@@ -113,8 +145,7 @@ class UltraPixel:
         captions = [self.prompt]
         height, width = self.height, self.width
 
-        pretrained_path = os.path.join(self.ultrapixel_path, self.pretrained)
-        sdd = torch.load(pretrained_path, map_location="cpu")
+        sdd = torch.load(self.pretrained, map_location="cpu")
         collect_sd = {}
         for k, v in sdd.items():
             collect_sd[k[7:]] = v
@@ -123,9 +154,8 @@ class UltraPixel:
             models.train_norm.load_state_dict(collect_sd)
         else:
             models.train_norm.load_state_dict(collect_sd, strict=True)
-            controlnet_path = os.path.join(self.ultrapixel_path, self.controlnet)
             models.controlnet.load_state_dict(
-                load_or_fail(controlnet_path), strict=True
+                load_or_fail(self.controlnet), strict=True
             )
 
         models.generator.eval()

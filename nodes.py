@@ -16,7 +16,7 @@ def get_models(base):
     return models
 
 
-def download_models():
+def download_models(ultrapixel_directory, stablecascade_directory):
     models = [
         ["ultrapixel_t2i.safetensors", "2kpr/UltraPixel"],
         ["stage_a.safetensors", "stabilityai/stable-cascade"],
@@ -27,7 +27,28 @@ def download_models():
         ["controlnet/canny.safetensors", "stabilityai/stable-cascade"],
     ]
     for model in models:
-        model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
+        if model[1].startswith("stabilityai"):
+            if stablecascade_directory == "default" or not os.path.exists(
+                stablecascade_directory
+            ):
+                model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
+                if not os.path.exists(stablecascade_directory):
+                    print(
+                        f"{stablecascade_directory} does not exist, defaulting to {model_path}"
+                    )
+            else:
+                model_path = stablecascade_directory
+        else:
+            if ultrapixel_directory == "default" or not os.path.exists(
+                ultrapixel_directory
+            ):
+                model_path = os.path.join(folder_paths.models_dir, "ultrapixel")
+                if not os.path.exists(ultrapixel_directory):
+                    print(
+                        f"{ultrapixel_directory} does not exist, defaulting to {model_path}"
+                    )
+            else:
+                model_path = ultrapixel_directory
         if os.path.exists(os.path.join(model_path, model[0])):
             # print("Path already exists:", os.path.join(model_path, model[0]))
             continue
@@ -51,6 +72,22 @@ class UltraPixelLoad:
                 "effnet": (get_models("effnet_encoder.safetensors"),),
                 "previewer": (get_models("previewer.safetensors"),),
                 "controlnet": (get_models("controlnet/canny.safetensors"),),
+                "ultrapixel_directory": (
+                    "STRING",
+                    {
+                        "multiline": False,
+                        "dynamicPrompts": True,
+                        "default": "default",
+                    },
+                ),
+                "stablecascade_directory": (
+                    "STRING",
+                    {
+                        "multiline": False,
+                        "dynamicPrompts": True,
+                        "default": "default",
+                    },
+                ),
             },
         }
 
@@ -60,11 +97,28 @@ class UltraPixelLoad:
     CATEGORY = "UltraPixel"
 
     def ultrapixel(
-        self, ultrapixel, stage_a, stage_b, stage_c, effnet, previewer, controlnet
+        self,
+        ultrapixel,
+        stage_a,
+        stage_b,
+        stage_c,
+        effnet,
+        previewer,
+        controlnet,
+        ultrapixel_directory,
+        stablecascade_directory,
     ):
-        download_models()
+        download_models(ultrapixel_directory, stablecascade_directory)
         model = up.UltraPixel(
-            ultrapixel, stage_a, stage_b, stage_c, effnet, previewer, controlnet
+            ultrapixel,
+            stage_a,
+            stage_b,
+            stage_c,
+            effnet,
+            previewer,
+            controlnet,
+            ultrapixel_directory,
+            stablecascade_directory,
         )
         return (model,)
 

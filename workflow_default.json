@@ -1,45 +1,7 @@
 {
-  "last_node_id": 15,
-  "last_link_id": 19,
+  "last_node_id": 16,
+  "last_link_id": 20,
   "nodes": [
-    {
-      "id": 1,
-      "type": "UltraPixelLoad",
-      "pos": [
-        14,
-        139
-      ],
-      "size": {
-        "0": 315,
-        "1": 202
-      },
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "model",
-          "type": "ULTRAPIXELMODEL",
-          "links": [
-            16
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltraPixelLoad"
-      },
-      "widgets_values": [
-        "ultrapixel_t2i.safetensors",
-        "stage_a.safetensors",
-        "stage_b_lite_bf16.safetensors",
-        "stage_c_bf16.safetensors",
-        "effnet_encoder.safetensors",
-        "previewer.safetensors",
-        "controlnet/canny.safetensors"
-      ]
-    },
     {
       "id": 12,
       "type": "PreviewImage",
@@ -83,7 +45,7 @@
         {
           "name": "model",
           "type": "ULTRAPIXELMODEL",
-          "link": 16
+          "link": 20
         },
         {
           "name": "controlnet_image",
@@ -115,7 +77,7 @@
       "widgets_values": [
         2048,
         2048,
-        741997913499515,
+        940240851961031,
         "randomize",
         "bf16",
         "true",
@@ -126,17 +88,49 @@
         0.7000000000000001,
         "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden."
       ]
+    },
+    {
+      "id": 16,
+      "type": "UltraPixelLoad",
+      "pos": [
+        7,
+        148
+      ],
+      "size": {
+        "0": 315,
+        "1": 250
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "model",
+          "type": "ULTRAPIXELMODEL",
+          "links": [
+            20
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltraPixelLoad"
+      },
+      "widgets_values": [
+        "ultrapixel_t2i.safetensors",
+        "stage_a.safetensors",
+        "stage_b_lite_bf16.safetensors",
+        "stage_c_bf16.safetensors",
+        "effnet_encoder.safetensors",
+        "previewer.safetensors",
+        "controlnet/canny.safetensors",
+        "default",
+        "default"
+      ]
     }
   ],
   "links": [
-    [
-      16,
-      1,
-      0,
-      14,
-      0,
-      "ULTRAPIXELMODEL"
-    ],
     [
       18,
       14,
@@ -144,16 +138,24 @@
       12,
       0,
       "IMAGE"
+    ],
+    [
+      20,
+      16,
+      0,
+      14,
+      0,
+      "ULTRAPIXELMODEL"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.6830134553650706,
+      "scale": 0.6830134553650707,
       "offset": [
-        9.066506738772325,
-        -54.63064767978551
+        34.98107673877221,
+        -18.467377679785468
       ]
     }
   },

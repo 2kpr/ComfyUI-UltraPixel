@@ -1,6 +1,6 @@
 {
-  "last_node_id": 14,
-  "last_link_id": 19,
+  "last_node_id": 15,
+  "last_link_id": 20,
   "nodes": [
     {
       "id": 13,
@@ -28,15 +28,79 @@
       }
     },
     {
-      "id": 1,
+      "id": 14,
+      "type": "UltraPixelProcess",
+      "pos": [
+        366,
+        146
+      ],
+      "size": {
+        "0": 450.48370361328125,
+        "1": 479.1488037109375
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "ULTRAPIXELMODEL",
+          "link": 20
+        },
+        {
+          "name": "controlnet_image",
+          "type": "IMAGE",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            18
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "edge_preview",
+          "type": "IMAGE",
+          "links": [
+            19
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UltraPixelProcess"
+      },
+      "widgets_values": [
+        2048,
+        2048,
+        973535413168831,
+        "randomize",
+        "bf16",
+        "true",
+        10,
+        1.1,
+        20,
+        4,
+        0.7000000000000001,
+        "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden, waving"
+      ]
+    },
+    {
+      "id": 15,
       "type": "UltraPixelLoad",
       "pos": [
-        14,
+        5,
         139
       ],
       "size": {
         "0": 315,
-        "1": 202
+        "1": 250
       },
       "flags": {},
       "order": 0,
@@ -46,7 +110,7 @@
           "name": "model",
           "type": "ULTRAPIXELMODEL",
           "links": [
-            16
+            20
           ],
           "shape": 3,
           "slot_index": 0
@@ -62,15 +126,17 @@
         "stage_c_bf16.safetensors",
         "effnet_encoder.safetensors",
         "previewer.safetensors",
-        "controlnet/canny.safetensors"
+        "controlnet/canny.safetensors",
+        "default",
+        "default"
       ]
     },
     {
       "id": 5,
       "type": "LoadImage",
       "pos": [
-        16,
-        395
+        2,
+        452
       ],
       "size": {
         "0": 315,
@@ -105,80 +171,16 @@
       ]
     },
     {
-      "id": 14,
-      "type": "UltraPixelProcess",
-      "pos": [
-        366,
-        146
-      ],
-      "size": [
-        450.483717466484,
-        479.1487988738271
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "ULTRAPIXELMODEL",
-          "link": 16
-        },
-        {
-          "name": "controlnet_image",
-          "type": "IMAGE",
-          "link": 17
-        }
-      ],
-      "outputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "links": [
-            18
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "edge_preview",
-          "type": "IMAGE",
-          "links": [
-            19
-          ],
-          "shape": 3,
-          "slot_index": 1
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UltraPixelProcess"
-      },
-      "widgets_values": [
-        2048,
-        2048,
-        868772379065041,
-        "randomize",
-        "bf16",
-        "true",
-        10,
-        1.1,
-        20,
-        4,
-        0.7000000000000001,
-        "A close-up portrait of a young woman with flawless skin, vibrant red lipstick, and wavy brown hair, wearing a vintage floral dress and standing in front of a blooming garden, waving"
-      ]
-    },
-    {
       "id": 12,
       "type": "PreviewImage",
       "pos": [
         1213,
         140
       ],
-      "size": [
-        1088.8128984964837,
-        990.3649069338269
-      ],
+      "size": {
+        "0": 1088.8128662109375,
+        "1": 990.3649291992188
+      },
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -195,14 +197,6 @@
     }
   ],
   "links": [
-    [
-      16,
-      1,
-      0,
-      14,
-      0,
-      "ULTRAPIXELMODEL"
-    ],
     [
       17,
       5,
@@ -226,16 +220,24 @@
       13,
       0,
       "IMAGE"
+    ],
+    [
+      20,
+      15,
+      0,
+      14,
+      0,
+      "ULTRAPIXELMODEL"
     ]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.683013455365071,
+      "scale": 0.5644739300537773,
       "offset": [
-        1.6029426679143006,
-        -24.445754383496105
+        129.91547966791447,
+        91.38988261650393
       ]
     }
   },
