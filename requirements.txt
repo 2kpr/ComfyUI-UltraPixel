@@ -1,3 +1,4 @@
+accelerate
 numpy>=1.23.5
 kornia>=0.7.0
 insightface>=0.7.3
