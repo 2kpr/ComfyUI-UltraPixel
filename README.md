@@ -44,3 +44,11 @@ A close-up portrait of a young woman with flawless skin, vibrant red lipstick, a
 <br/>
 
 <img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/cn.png">
+
+<br/>
+Example ControlNet Output for prompt:
+A close-up portrait of a young woman with blonde hair bobcut wearing a beautiful blue dress giving the thumbs up
+<br/>
+<br/>
+
+<img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/cn2.png">
