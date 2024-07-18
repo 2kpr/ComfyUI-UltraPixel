@@ -60,8 +60,6 @@ A close-up portrait of a young woman with blonde hair bobcut wearing a beautiful
 <br/>
 
 <img src="https://github.com/2kpr/ComfyUI-UltraPixel/blob/main/cn2.png">
-<br/>
-<br/>
 
 ### Credits:
 
