@@ -4,6 +4,10 @@
 
 <br/>
 
+As of 7/18, having constructed ComfyUI-UltraPixel using the original code from https://github.com/catcathh/UltraPixel, I'm now going to completely rewrite ComfyUI-UltraPixel such that it has much better integration with ComfyUI's native code vs basically ComfyUI-UltraPixel just being a 'modified wrapper' around the original UltraPixel code. This will use / bring with it the 'standard' ComfyUI prompt/clip handling and model loading, positive/negative weighted prompting, no longer having to download the 10GB text/clip model the original UltraPixel code was/has been <i>(ie the 'downloading shards' you all have seen and had to wait upon)</i>, among other features. While of course retaining the ability to work with 10GB/12GB/16GB GPUs, etc.
+
+<br/>
+
 Now works <i>(as of 7/17)</i> with 10GB/12GB/16GB GPUs:
  - 10GB GPUs work up to <i>(about)</i> 2048x2048 <i>(for text2image and controlnet)</i>
  - 12GB GPUs work up to <i>(about)</i> 3072x3072 <i>(for text2image and controlnet)</i>
