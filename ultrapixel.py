@@ -16,6 +16,7 @@ from .gdf import (
 )
 from .train import WurstCore_t2i as WurstCoreC
 
+from safetensors.torch import load_file as load_safetensors
 
 class UltraPixel:
     def __init__(
@@ -88,6 +89,9 @@ class UltraPixel:
         self.prompt = prompt
         self.controlnet_image = controlnet_image
 
+
+
+
     def process(self):
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         torch.manual_seed(self.seed)
@@ -141,10 +145,15 @@ class UltraPixel:
         captions = [self.prompt]
         height, width = self.height, self.width
 
-        sdd = torch.load(self.pretrained, map_location="cpu")
+        """sdd = torch.load(self.pretrained, map_location="cpu") # this is the old code for loading serialized pytorch binaries (unsafe). kept it here for reference. they had a misleading file extension: ".safetensors".
         collect_sd = {}
         for k, v in sdd.items():
-            collect_sd[k[7:]] = v
+            collect_sd[k[7:]] = v"""
+            
+        sdd = load_safetensors(self.pretrained) # this is the equivalent code for loading the real safetensors versions of ultrapixel_t2i and lora_cat.
+        collect_sd = {k: v for k, v in sdd.items()}
+        collect_sd = {k[7:] if k.startswith('module.') else k: v for k, v in collect_sd.items()}
+        models.train_norm.load_state_dict(collect_sd)
 
         if self.controlnet_image == None:
             models.train_norm.load_state_dict(collect_sd)
