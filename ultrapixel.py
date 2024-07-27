@@ -144,11 +144,6 @@ class UltraPixel:
 
         captions = [self.prompt]
         height, width = self.height, self.width
-
-        """sdd = torch.load(self.pretrained, map_location="cpu") # this is the old code for loading serialized pytorch binaries (unsafe). kept it here for reference. they had a misleading file extension: ".safetensors".
-        collect_sd = {}
-        for k, v in sdd.items():
-            collect_sd[k[7:]] = v"""
             
         sdd = load_safetensors(self.pretrained) # this is the equivalent code for loading the real safetensors versions of ultrapixel_t2i and lora_cat.
         collect_sd = {k: v for k, v in sdd.items()}
@@ -163,8 +158,8 @@ class UltraPixel:
                 load_or_fail(self.controlnet), strict=True
             )
 
-        models.generator.eval()
-        models.train_norm.eval()
+        models.generator.eval()   # stage C
+        models.train_norm.eval()  # stage UP
 
         batch_size = 1
         edge_image = None
