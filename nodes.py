@@ -129,11 +129,11 @@ class UltraPixelProcess:
                 "model": ("ULTRAPIXELMODEL",),
                 "height": (
                     "INT",
-                    {"default": 2048, "min": 512, "max": 5120, "step": 256},
+                    {"default": 2048, "min": 512, "max": 5120, "step": 8},
                 ),
                 "width": (
                     "INT",
-                    {"default": 2048, "min": 512, "max": 5120, "step": 256},
+                    {"default": 2048, "min": 512, "max": 5120, "step": 8},
                 ),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xFFFFFFFFFFFFFFFF}),
                 "dtype": (["bf16", "fp32"],),
